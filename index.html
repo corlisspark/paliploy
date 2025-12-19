@@ -31,7 +31,22 @@
   
   <!-- Google Maps API -->
   <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDz6LLkJ-eNIfB-fdLzvjp6UUXEHtTsnUM&loading=async">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDz6LLkJ-eNIfB-fdLzvjp6UUXEHtTsnUM&libraries=places&loading=async">
+  </script>
+  
+  <!-- Debug Firebase -->
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      console.log('DOMContentLoaded - checking Firebase');
+      setTimeout(() => {
+        console.log('Firebase check:', {
+          firebase: !!window.firebase,
+          db: !!window.db,
+          authManager: !!window.authManager,
+          googleMaps: !!window.google
+        });
+      }, 3000);
+    });
   </script>
   
   <!-- React entry point -->
