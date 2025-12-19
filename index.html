@@ -6,28 +6,16 @@
   <title>PacksList - Find a Plug 🔌</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛽</text></svg>">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Google Maps must load before React bootstraps so the map can initialize -->
-  <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi4Yj6RPN9wGv391At8To3Fx1Fr9dmsCc&libraries=places"></script>
-
-  <script type="module" crossorigin src="/assets/main-Y6gjV3ll.js"></script>
+  <script type="module" crossorigin src="/assets/main-BZO59RcF.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/useAuth-g5JMFC9x.js">
   <link rel="modulepreload" crossorigin href="/assets/Header-COD7X1WY.js">
   <link rel="modulepreload" crossorigin href="/assets/user-DSFq6umH.js">
   <link rel="modulepreload" crossorigin href="/assets/VendorModal-BH7wcwAH.js">
-  <link rel="stylesheet" crossorigin href="/assets/main-DLfLzVeX.css">
+  <link rel="stylesheet" crossorigin href="/assets/main-BVX6EDIp.css">
   <link rel="stylesheet" crossorigin href="/assets/styles-BbV1rE_V.css">
 </head>
 <body>
-  <div id="root">
-    <!-- Fallback content while React loads -->
-    <div style="display: flex; align-items: center; justify-content: center; height: 100vh; font-family: Arial;">
-      <div style="text-align: center;">
-        <div style="font-size: 24px; margin-bottom: 16px;">⛽ PacksList</div>
-        <div>Loading...</div>
-      </div>
-    </div>
-  </div>
+  <div id="root"></div>
 
   <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -41,71 +29,8 @@
   <script src="location-manager.js"></script>
   <script src="header-manager.js"></script>
   
-  <!-- Debug Firebase -->
-  <script>
-    window.addEventListener('DOMContentLoaded', function() {
-      console.log('DOMContentLoaded - checking Firebase');
-      setTimeout(() => {
-        console.log('Firebase check:', {
-          firebase: !!window.firebase,
-          db: !!window.db,
-          authManager: !!window.authManager,
-          googleMaps: !!window.google
-        });
-        
-        // Check if React rendered
-        const root = document.getElementById('root');
-        const hasReactContent = root.children.length > 1 || !root.innerHTML.includes('Loading...');
-        console.log('React check:', {
-          rootElement: !!root,
-          hasReactContent,
-          rootChildren: root.children.length,
-          rootInnerHTML: root.innerHTML.substring(0, 100)
-        });
-      }, 5000);
-      
-      // Extended check after 10 seconds
-      setTimeout(() => {
-        const root = document.getElementById('root');
-        if (root.innerHTML.includes('Loading...')) {
-          console.error('App still loading after 10 seconds - potential timeout issue');
-          console.log('Current root content:', root.innerHTML);
-          
-          // Force show error state
-          const appContainer = root.querySelector('.app-container');
-          if (appContainer) {
-            const mainContent = appContainer.querySelector('.main-content') || appContainer;
-            if (mainContent) {
-              mainContent.innerHTML = `
-                <div style="padding: 20px; text-align: center; font-family: Arial;">
-                  <h2>⚠️ Loading Timeout</h2>
-                  <p>The app is taking longer than expected to load data.</p>
-                  <p><strong>Possible issues:</strong></p>
-                  <ul style="text-align: left; display: inline-block;">
-                    <li>Firebase connection timeout</li>
-                    <li>Network connectivity issues</li>
-                    <li>Database query taking too long</li>
-                  </ul>
-                  <button onclick="location.reload()" style="padding: 10px 20px; margin-top: 10px;">
-                    🔄 Retry
-                  </button>
-                </div>
-              `;
-            }
-          }
-        }
-      }, 10000);
-    });
-    
-    // Catch React errors
-    window.addEventListener('error', function(e) {
-      console.error('Global error:', e.error, e.message, e.filename);
-    });
-    
-    window.addEventListener('unhandledrejection', function(e) {
-      console.error('Unhandled promise rejection:', e.reason);
-    });
-  </script>
+  <!-- Google Maps API -->
+  <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi4Yj6RPN9wGv391At8To3Fx1Fr9dmsCc&libraries=places"></script>
   
   <!-- React entry point -->
 </body>
