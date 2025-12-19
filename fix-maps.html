@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Maps API Key Fix</title>
+    <style>
+        body { font-family: Arial; padding: 20px; line-height: 1.6; }
+        .step { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .important { background: #fff3cd; border: 1px solid #ffeaa7; padding: 10px; margin: 10px 0; }
+        code { background: #f8f9fa; padding: 2px 6px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>🗺️ Google Maps API Key Fix Required</h1>
+    
+    <div class="important">
+        <strong>Issue:</strong> Your Google Maps API key is restricted to localhost only.<br>
+        <strong>Domain:</strong> paliploy.netlify.app<br>
+        <strong>Solution:</strong> Add your Netlify domain to Google Cloud Console
+    </div>
+
+    <h2>How to Fix:</h2>
+
+    <div class="step">
+        <h3>Step 1: Go to Google Cloud Console</h3>
+        <p>Visit: <a href="https://console.cloud.google.com/apis/credentials" target="_blank">https://console.cloud.google.com/apis/credentials</a></p>
+    </div>
+
+    <div class="step">
+        <h3>Step 2: Find Your API Key</h3>
+        <p>Look for the key: <code>AIzaSyDz6LLkJ-eNIfB-fdLzvjp6UUXEHtTsnUM</code></p>
+        <p>Click on it to edit</p>
+    </div>
+
+    <div class="step">
+        <h3>Step 3: Add Netlify Domain</h3>
+        <p>Under "Website restrictions" → "HTTP referrers", add:</p>
+        <ul>
+            <li><code>https://paliploy.netlify.app/*</code></li>
+            <li><code>http://localhost:*/*</code> (keep this for development)</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <h3>Step 4: Save Changes</h3>
+        <p>Click "Save" and wait 2-3 minutes for changes to propagate</p>
+    </div>
+
+    <div class="step">
+        <h3>Step 5: Test</h3>
+        <p>Refresh your PacksList app - the map should now load!</p>
+    </div>
+
+    <h2>Alternative: Create New Unrestricted Key</h2>
+    <div class="step">
+        <p>If you want quick testing, create a new API key with no restrictions and replace it in your <code>firebase-config.js</code></p>
+    </div>
+
+    <p><strong>Current error:</strong> "This page can't load Google Maps correctly"</p>
+    <p><strong>Cause:</strong> API key domain restrictions</p>
+    <p><strong>Fix time:</strong> 2-3 minutes after updating Google Cloud Console</p>
+    
+    <p><a href="/">← Back to PacksList</a></p>
+</body>
+</html>
