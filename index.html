@@ -15,7 +15,15 @@
   <link rel="stylesheet" crossorigin href="/assets/styles-BbV1rE_V.css">
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <!-- Fallback content while React loads -->
+    <div style="display: flex; align-items: center; justify-content: center; height: 100vh; font-family: Arial;">
+      <div style="text-align: center;">
+        <div style="font-size: 24px; margin-bottom: 16px;">⛽ PacksList</div>
+        <div>Loading...</div>
+      </div>
+    </div>
+  </div>
 
   <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -45,7 +53,26 @@
           authManager: !!window.authManager,
           googleMaps: !!window.google
         });
-      }, 3000);
+        
+        // Check if React rendered
+        const root = document.getElementById('root');
+        const hasReactContent = root.children.length > 1 || !root.innerHTML.includes('Loading...');
+        console.log('React check:', {
+          rootElement: !!root,
+          hasReactContent,
+          rootChildren: root.children.length,
+          rootInnerHTML: root.innerHTML.substring(0, 100)
+        });
+      }, 5000);
+    });
+    
+    // Catch React errors
+    window.addEventListener('error', function(e) {
+      console.error('Global error:', e.error, e.message, e.filename);
+    });
+    
+    window.addEventListener('unhandledrejection', function(e) {
+      console.error('Unhandled promise rejection:', e.reason);
     });
   </script>
   
