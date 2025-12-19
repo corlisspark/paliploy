@@ -1,0 +1,22 @@
+# Security - Never commit these
+firebase-config.js
+*.env
+*.env.local
+*.env.production
+.env
+
+# API Keys and secrets
+**/config.js
+**/secret*
+**/key*
+
+# Logs
+logs
+*.log
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
