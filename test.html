@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Test</title>
+    <style>
+        #map { height: 300px; width: 100%; background: #ccc; }
+        .debug { background: #f0f0f0; padding: 10px; margin: 10px 0; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>PacksList Debug Test</h1>
+    
+    <div class="debug" id="firebase-status">Firebase: Loading...</div>
+    <div class="debug" id="maps-status">Google Maps: Loading...</div>
+    <div class="debug" id="data-status">Data: Loading...</div>
+    
+    <div id="map"></div>
+    
+    <div class="debug">
+        <h3>Raw Debug Info:</h3>
+        <pre id="debug-output"></pre>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
+    <!-- Google Maps -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDz6LLkJ-eNIfB-fdLzvjp6UUXEHtTsnUM&callback=initTestMap">
+    </script>
+    
+    <script>
+        function updateStatus(element, status, color = '#333') {
+            document.getElementById(element).innerHTML = status;
+            document.getElementById(element).style.color = color;
+        }
+        
+        function initTestMap() {
+            updateStatus('maps-status', 'Google Maps: ✅ LOADED', 'green');
+            
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: { lat: 41.8240, lng: -71.4128 }
+            });
+            
+            // Add test marker
+            new google.maps.Marker({
+                position: { lat: 41.8240, lng: -71.4128 },
+                map: map,
+                title: 'Test Marker - Providence'
+            });
+        }
+        
+        // Test Firebase
+        setTimeout(() => {
+            const debug = {
+                firebase: !!window.firebase,
+                db: !!window.db,
+                google: !!window.google,
+                hostname: window.location.hostname,
+                url: window.location.href
+            };
+            
+            if (window.firebase && window.db) {
+                updateStatus('firebase-status', 'Firebase: ✅ CONNECTED', 'green');
+                
+                // Test database query
+                window.db.collection('posts').limit(1).get()
+                    .then(snapshot => {
+                        updateStatus('data-status', `Data: ✅ Found ${snapshot.size} posts`, 'green');
+                    })
+                    .catch(error => {
+                        updateStatus('data-status', `Data: ❌ Error - ${error.message}`, 'red');
+                    });
+            } else {
+                updateStatus('firebase-status', 'Firebase: ❌ FAILED', 'red');
+                updateStatus('data-status', 'Data: ❌ No Firebase connection', 'red');
+            }
+            
+            document.getElementById('debug-output').textContent = JSON.stringify(debug, null, 2);
+        }, 3000);
+        
+        // Test Google Maps after delay
+        setTimeout(() => {
+            if (!window.google) {
+                updateStatus('maps-status', 'Google Maps: ❌ FAILED TO LOAD', 'red');
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
