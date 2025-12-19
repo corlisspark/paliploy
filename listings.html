@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listings - PacksList</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/listings-CEtzmZQL.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/useAuth-g5JMFC9x.js">
+  <link rel="modulepreload" crossorigin href="/assets/Header-COD7X1WY.js">
+  <link rel="modulepreload" crossorigin href="/assets/VendorModal-BH7wcwAH.js">
+  <link rel="stylesheet" crossorigin href="/assets/listings-B4NKatdy.css">
+  <link rel="stylesheet" crossorigin href="/assets/styles-BbV1rE_V.css">
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  
+  <!-- Essential managers -->
+  <script src="auth/auth-manager.js"></script>
+  <script src="config-manager.js"></script>
+  
+  <!-- React entry point -->
+</body>
+</html>
+  <style>
+    .listings-container {
+      padding: 20px 16px;
+      padding-bottom: 100px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .listings-header {
+      margin-bottom: 20px;
+    }
+    
+    .listings-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+    
+    .listings-subtitle {
+      font-size: 14px;
+      color: #6c757d;
+    }
+    
+    .listings-filters {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .search-section {
+      margin-bottom: 16px;
+    }
+    
+    .search-input-container {
+      display: flex;
+      align-items: center;
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 10px 12px;
+      gap: 8px;
+    }
+    
+    .search-icon {
+      font-size: 16px;
+      color: #6c757d;
+    }
+    
+    .search-input {
+      flex: 1;
+      border: none;
+      background: none;
+      font-size: 16px;
+      outline: none;
+      color: #333;
+    }
+    
+    .search-input::-moz-placeholder {
+      color: #6c757d;
+    }
+    
+    .search-input::placeholder {
+      color: #6c757d;
+    }
+    
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 0;
+    }
+    
+    .filter-pill {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #6c757d;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    
+    .filter-pill:hover {
+      background: #e9ecef;
+    }
+    
+    .filter-pill.active {
+      background: #28a745;
+      color: white;
+      border-color: #28a745;
+    }
+    
+    .listings-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .loading-state {
+      text-align: center;
+      padding: 40px;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <!-- Dynamic header content will be rendered here by header-manager.js -->
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="listings-container">
+        <div class="listings-header">
+          <h1 class="listings-title">Nearby Listings</h1>
+          <div class="listings-subtitle" id="listings-count">Loading vendors near you...</div>
+        </div>
+
+        <div class="listings-filters">
+          <div class="search-section">
+            <div class="search-input-container">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="search-input" class="search-input" placeholder="Search nearby vendors and strains">
+            </div>
+          </div>
+          
+          <div class="filter-pills" id="filter-pills">
+            <div class="filter-pill active" data-filter="all">All</div>
+            <div class="filter-pill" data-filter="bozo-headstash">Bozo Headstash</div>
+            <div class="filter-pill" data-filter="deep-fried">Deep Fried</div>
+            <div class="filter-pill" data-filter="gumbo">Gumbo</div>
+            <div class="filter-pill" data-filter="high-tolerance">High Tolerance</div>
+            <div class="filter-pill" data-filter="other">Other</div>
+          </div>
+        </div>
+
+        <div class="listings-grid" id="listings-grid">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading listings...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Toolbar -->
+    <div class="bottom-toolbar">
+      <nav class="toolbar-nav">
+        <!-- Dynamic navigation will be rendered here by navigation-manager.js -->
+      </nav>
+    </div>
+
+    <!-- Selected Vendor Details Modal -->
+    <div class="vendor-modal" id="vendor-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close-btn" id="close-modal">✕</button>
+        </div>
+        <div class="modal-body" id="modal-body">
+          <!-- Vendor details will be populated here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="config-manager.js"></script>
+  <script src="cache-manager.js"></script>
+  <script src="content-manager.js"></script>
+  <script src="navigation-manager.js"></script>
+  <script src="page-manager.js"></script>
+  <script src="vendor-manager.js"></script>
+  <script src="location-manager.js"></script>
+  <script src="auth/auth-manager.js"></script>
+  <script src="header-manager.js"></script>
+  <script src="admin-frontend-coordinator.js"></script>
+  <script src="listings.js"></script>
+</body>
+</html>

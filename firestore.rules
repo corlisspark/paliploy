@@ -1,0 +1,99 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Posts collection - main vendor listings
+    match /posts/{postId} {
+      // Anyone can read posts
+      allow read: if true;
+      
+      // Only authenticated users can create/update posts
+      allow create, update: if request.auth != null 
+        && validatePostData(request.resource.data);
+      
+      // Only post owner or admin can delete
+      allow delete: if request.auth != null 
+        && (request.auth.uid == resource.data.userId 
+            || request.auth.token.email in ['sxpxru@gmail.com', 'admin@packslist.com']);
+    }
+    
+    // User profiles
+    match /users/{userId} {
+      // Users can read/write their own profile
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      
+      // Admins can read all user profiles (for admin panel)
+      allow read: if request.auth != null 
+        && request.auth.token.email in ['sxpxru@gmail.com', 'admin@packslist.com'];
+    }
+    
+    // Config collection - needed for time filtering and other app configs
+    match /config/{configDoc} {
+      // Anyone can read config (for app functionality)
+      allow read: if true;
+      
+      // Only admins can write config
+      allow write: if request.auth != null 
+        && request.auth.token.email in ['sxpxru@gmail.com', 'admin@packslist.com'];
+    }
+    
+    // Admin collections - restrict access
+    match /admin/{document=**} {
+      allow read, write: if request.auth != null 
+        && request.auth.token.email in ['sxpxru@gmail.com', 'admin@packslist.com'];
+    }
+  }
+  
+  // Post validation function
+  function validatePostData(data) {
+    return data.keys().hasAll(['title', 'price', 'city', 'vendor', 'created'])
+      && validateTitle(data.title)
+      && validatePrice(data.price)
+      && validateCity(data.city)
+      && validateVendor(data.vendor)
+      && validateTimestamp(data.created)
+      && validateOptionalFields(data);
+  }
+  
+  // Title validation: non-empty string, max 100 chars
+  function validateTitle(title) {
+    return title is string 
+      && title.size() > 0 
+      && title.size() <= 100
+      && title.trim().size() > 0;
+  }
+  
+  // Price validation: positive number
+  function validatePrice(price) {
+    return price is number 
+      && price > 0 
+      && price <= 10000; // reasonable upper limit
+  }
+  
+  // City validation: valid city key
+  function validateCity(city) {
+    return city is string 
+      && city in ['providence', 'woonsocket', 'newport', 'southcoast-ma', 
+                  'boston', 'cambridge', 'worcester', 'north-shore-ma'];
+  }
+  
+  // Vendor validation: non-empty string
+  function validateVendor(vendor) {
+    return vendor is string 
+      && vendor.size() > 0 
+      && vendor.size() <= 50;
+  }
+  
+  // Timestamp validation: must be recent server timestamp
+  function validateTimestamp(created) {
+    return created is timestamp 
+      && created == request.time;
+  }
+  
+  // Optional fields validation
+  function validateOptionalFields(data) {
+    return (!('description' in data) || (data.description is string && data.description.size() <= 500))
+      && (!('images' in data) || (data.images is list && data.images.size() <= 5))
+      && (!('userId' in data) || data.userId == request.auth.uid);
+  }
+}

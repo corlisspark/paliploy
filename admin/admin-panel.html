@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - PacksList</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" crossorigin href="/assets/admin-uBT8F8tD.css">
+  <link rel="stylesheet" crossorigin href="/assets/styles-BbV1rE_V.css">
+</head>
+<body class="admin-body">
+  <div class="admin-container">
+    
+    <!-- Admin Header -->
+    <header class="admin-header">
+      <div class="admin-header-content">
+        <div class="admin-logo">
+          <div class="logo-icon">🌿</div>
+          <span class="logo-text">PacksList Admin</span>
+        </div>
+        <div class="admin-header-actions">
+          <div class="admin-user-info">
+            <span id="admin-user-name">Admin User</span>
+            <span class="admin-badge">👑</span>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="window.location.href='../index.html'">
+            🏠 Back to Site
+          </button>
+          <button class="btn btn-link btn-sm" onclick="window.authManager.signOut()">
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+      
+      <!-- Sidebar Navigation -->
+      <nav class="admin-sidebar">
+        <div class="sidebar-content">
+          
+          <!-- Quick Stats -->
+          <div class="quick-stats">
+            <div class="stat-item">
+              <div class="stat-number" id="pending-count">0</div>
+              <div class="stat-label">Pending</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" id="users-count">0</div>
+              <div class="stat-label">Users</div>
+            </div>
+          </div>
+
+          <!-- Navigation Menu -->
+          <ul class="admin-nav">
+            <li class="nav-item">
+              <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#packs" class="nav-link" data-section="packs">
+                <span class="nav-icon">📦</span>
+                <span class="nav-text">Pack Moderation</span>
+                <span class="nav-badge" id="packs-badge">0</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#users" class="nav-link" data-section="users">
+                <span class="nav-icon">👥</span>
+                <span class="nav-text">User Management</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#analytics" class="nav-link" data-section="analytics">
+                <span class="nav-icon">📈</span>
+                <span class="nav-text">Analytics</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#vendors" class="nav-link" data-section="vendors">
+                <span class="nav-icon">🏪</span>
+                <span class="nav-text">Vendors</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#locations" class="nav-link" data-section="locations">
+                <span class="nav-icon">📍</span>
+                <span class="nav-text">Locations</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#config" class="nav-link" data-section="config">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">Configuration</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#logs" class="nav-link" data-section="logs">
+                <span class="nav-icon">📝</span>
+                <span class="nav-text">Audit Logs</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#developer-tools" class="nav-link" data-section="developer-tools">
+                <span class="nav-icon">🛠️</span>
+                <span class="nav-text">Developer Tools</span>
+              </a>
+            </li>
+          </ul>
+
+        </div>
+      </nav>
+
+      <!-- Main Content Area -->
+      <main class="admin-main">
+        
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="admin-section active">
+          <div class="section-header">
+            <h1>Dashboard</h1>
+            <div class="section-actions">
+              <button class="btn btn-outline" onclick="adminManager.refreshData()">
+                🔄 Refresh
+              </button>
+            </div>
+          </div>
+
+          <!-- Metrics Grid -->
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-icon">📦</div>
+              <div class="metric-content">
+                <div class="metric-number" id="total-packs">0</div>
+                <div class="metric-label">Total Packs</div>
+                <div class="metric-change" id="packs-change">+0 today</div>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon">⏳</div>
+              <div class="metric-content">
+                <div class="metric-number" id="pending-packs">0</div>
+                <div class="metric-label">Pending Review</div>
+                <div class="metric-change urgent" id="pending-change">Needs attention</div>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon">👥</div>
+              <div class="metric-content">
+                <div class="metric-number" id="total-users">0</div>
+                <div class="metric-label">Total Users</div>
+                <div class="metric-change" id="users-change">+0 today</div>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon">🚩</div>
+              <div class="metric-content">
+                <div class="metric-number" id="flagged-content">0</div>
+                <div class="metric-label">Flagged Content</div>
+                <div class="metric-change" id="flagged-change">0 unresolved</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="quick-actions">
+            <h3>Quick Actions</h3>
+            <div class="action-grid">
+              <button class="action-card" onclick="adminManager.showSection('packs')">
+                <div class="action-icon">⚡</div>
+                <div class="action-title">Review Pending</div>
+                <div class="action-subtitle" id="quick-pending-count">0 packs waiting</div>
+              </button>
+              <button class="action-card" onclick="adminManager.bulkApprove()">
+                <div class="action-icon">✅</div>
+                <div class="action-title">Bulk Approve</div>
+                <div class="action-subtitle">Safe packs only</div>
+              </button>
+              <button class="action-card" onclick="adminManager.showSection('users')">
+                <div class="action-icon">👤</div>
+                <div class="action-title">Manage Users</div>
+                <div class="action-subtitle">Roles & permissions</div>
+              </button>
+              <button class="action-card" onclick="adminManager.showSection('config')">
+                <div class="action-icon">🔧</div>
+                <div class="action-title">Settings</div>
+                <div class="action-subtitle">Platform config</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="recent-activity">
+            <h3>Recent Activity</h3>
+            <div id="activity-feed" class="activity-feed">
+              <div class="loading">Loading recent activity...</div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- Pack Moderation Section -->
+        <section id="packs-section" class="admin-section">
+          <div class="section-header">
+            <h1>Pack Moderation</h1>
+            <div class="section-actions">
+              <select id="pack-filter" class="filter-select">
+                <option value="pending">Pending Review</option>
+                <option value="all">All Packs</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="flagged">Flagged</option>
+              </select>
+              <button class="btn btn-primary" onclick="adminManager.bulkApprove()">
+                Bulk Approve Safe
+              </button>
+            </div>
+          </div>
+
+          <!-- Pack Review Queue -->
+          <div id="pack-review-queue" class="review-queue">
+            <div class="loading">Loading packs for review...</div>
+          </div>
+
+        </section>
+
+        <!-- User Management Section -->
+        <section id="users-section" class="admin-section">
+          <div class="section-header">
+            <h1>User Management</h1>
+            <div class="section-actions">
+              <input type="text" id="user-search" placeholder="Search users..." class="search-input">
+              <select id="user-role-filter" class="filter-select">
+                <option value="all">All Roles</option>
+                <option value="user">Users</option>
+                <option value="admin">Admins</option>
+                <option value="banned">Banned</option>
+              </select>
+              <button class="btn btn-primary" onclick="showCreateUserModal()">
+                ➕ Create User
+              </button>
+            </div>
+          </div>
+
+          <!-- Users Table -->
+          <div id="users-table" class="users-table">
+            <div class="loading">Loading users...</div>
+          </div>
+
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics-section" class="admin-section">
+          <div class="section-header">
+            <h1>Analytics</h1>
+            <div class="section-actions">
+              <select id="analytics-period" class="filter-select">
+                <option value="7d">Last 7 Days</option>
+                <option value="30d">Last 30 Days</option>
+                <option value="90d">Last 90 Days</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- User Behavior Analytics -->
+          <div class="behavior-stats-grid">
+            <div class="stat-card highlight">
+              <div class="stat-icon">🎯</div>
+              <div class="stat-content">
+                <div class="stat-number" id="total-pin-clicks">0</div>
+                <div class="stat-label">Pin Clicks Today</div>
+                <div class="stat-change" id="pin-clicks-change">+0%</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">👁️</div>
+              <div class="stat-content">
+                <div class="stat-number" id="modal-views">0</div>
+                <div class="stat-label">Modal Views</div>
+                <div class="stat-change" id="modal-views-change">+0%</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">⚡</div>
+              <div class="stat-content">
+                <div class="stat-number" id="avg-session-time">0s</div>
+                <div class="stat-label">Avg Session</div>
+                <div class="stat-change" id="session-time-change">+0%</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">📱</div>
+              <div class="stat-content">
+                <div class="stat-number" id="mobile-usage">0%</div>
+                <div class="stat-label">Mobile Users</div>
+                <div class="stat-change" id="mobile-usage-change">+0%</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pin Interaction Analytics -->
+          <div class="analytics-grid">
+            <div class="chart-card">
+              <h3>🎯 Pin Interactions</h3>
+              <div class="chart-controls">
+                <button class="chart-btn active" data-metric="clicks">Clicks</button>
+                <button class="chart-btn" data-metric="hovers">Hovers</button>
+                <button class="chart-btn" data-metric="conversions">Conversions</button>
+              </div>
+              <div id="pin-interactions-chart" class="chart-container">
+                <canvas id="pin-interactions-canvas" width="400" height="200"></canvas>
+              </div>
+            </div>
+            
+            <div class="chart-card">
+              <h3>🗺️ Hotspot Analysis</h3>
+              <div id="hotspot-chart" class="chart-container">
+                <div class="hotspot-list" id="hotspot-list">
+                  <div class="loading">Loading hotspot data...</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="chart-card">
+              <h3>📊 Popular Listings</h3>
+              <div id="popular-listings-chart" class="chart-container">
+                <div class="popular-listings" id="popular-listings">
+                  <div class="loading">Loading popular listings...</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="chart-card">
+              <h3>⏱️ User Journey</h3>
+              <div id="user-journey-chart" class="chart-container">
+                <div class="journey-flow" id="journey-flow">
+                  <div class="journey-step">
+                    <div class="step-number">1</div>
+                    <div class="step-name">Map Load</div>
+                    <div class="step-count" id="step-load">0</div>
+                  </div>
+                  <div class="journey-arrow">→</div>
+                  <div class="journey-step">
+                    <div class="step-number">2</div>
+                    <div class="step-name">Pin Hover</div>
+                    <div class="step-count" id="step-hover">0</div>
+                  </div>
+                  <div class="journey-arrow">→</div>
+                  <div class="journey-step">
+                    <div class="step-number">3</div>
+                    <div class="step-name">Pin Click</div>
+                    <div class="step-count" id="step-click">0</div>
+                  </div>
+                  <div class="journey-arrow">→</div>
+                  <div class="journey-step">
+                    <div class="step-number">4</div>
+                    <div class="step-name">Contact</div>
+                    <div class="step-count" id="step-contact">0</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real-time Activity Feed -->
+          <div class="chart-card full-width">
+            <h3>🔴 Real-time Activity</h3>
+            <div class="activity-controls">
+              <label class="toggle-switch">
+                <input type="checkbox" id="auto-refresh-toggle" checked>
+                <span class="toggle-slider"></span>
+                Auto-refresh
+              </label>
+              <button class="btn btn-sm" onclick="clearActivityFeed()">Clear</button>
+            </div>
+            <div id="activity-feed" class="activity-feed">
+              <div class="activity-item welcome">
+                <div class="activity-icon">🚀</div>
+                <div class="activity-content">
+                  <div class="activity-text">Behavior analytics initialized</div>
+                  <div class="activity-time">Just now</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- Vendors Management Section -->
+        <section id="vendors-section" class="admin-section">
+          <div class="section-header">
+            <h1>Vendor Management</h1>
+            <div class="section-actions">
+              <button class="btn btn-primary" onclick="adminManager.showAddVendorModal()">
+                ➕ Add Vendor
+              </button>
+            </div>
+          </div>
+
+          <!-- Vendor Visibility Settings -->
+          <div class="config-section">
+            <h3>Vendor Display Settings</h3>
+            <div class="vendor-visibility-controls">
+              <div class="config-row">
+                <div class="config-toggle">
+                  <input type="checkbox" id="show-vendor-names">
+                  <label for="show-vendor-names" class="toggle-label">
+                    <span class="toggle-switch"></span>
+                    Show Vendor Names
+                  </label>
+                </div>
+                <small class="config-help">When disabled, vendor names will be hidden from users and shown as "Vendor"</small>
+              </div>
+              
+              <div class="config-row">
+                <div class="config-toggle">
+                  <input type="checkbox" id="show-vendor-avatars">
+                  <label for="show-vendor-avatars" class="toggle-label">
+                    <span class="toggle-switch"></span>
+                    Show Vendor Avatars
+                  </label>
+                </div>
+                <small class="config-help">When disabled, vendor-specific avatars will be replaced with generic icons</small>
+              </div>
+              
+              <div class="config-row">
+                <div class="config-toggle">
+                  <input type="checkbox" id="hide-vendor-in-modal">
+                  <label for="hide-vendor-in-modal" class="toggle-label">
+                    <span class="toggle-switch"></span>
+                    Hide Vendor Info in Modals
+                  </label>
+                </div>
+                <small class="config-help">When enabled, vendor information will be hidden even in detailed modals</small>
+              </div>
+              
+              <button class="btn btn-primary" onclick="adminManager.saveVendorVisibilitySettings()">
+                💾 Save Settings
+              </button>
+            </div>
+          </div>
+
+          <!-- Vendors List -->
+          <div class="vendors-container">
+            <div class="vendors-grid" id="vendors-grid">
+              <div class="loading">Loading vendors...</div>
+            </div>
+          </div>
+
+          <!-- Vendor Management Modal -->
+          <div id="vendor-modal" class="admin-modal">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3 id="vendor-modal-title">Add Vendor</h3>
+                <button class="close-btn" onclick="adminManager.closeVendorModal()">✕</button>
+              </div>
+              <div class="modal-body">
+                <form id="vendor-form">
+                  <div class="form-group">
+                    <label for="vendor-name">Vendor Name *</label>
+                    <input type="text" id="vendor-name" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="vendor-color">Brand Color *</label>
+                    <input type="color" id="vendor-color" value="#8e44ad" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="vendor-icon">Icon (single character) *</label>
+                    <input type="text" id="vendor-icon" maxlength="1" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="vendor-description">Description</label>
+                    <textarea id="vendor-description" rows="3"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="vendor-priority">Priority (lower = higher priority)</label>
+                    <input type="number" id="vendor-priority" min="1" value="1">
+                  </div>
+                  <div class="form-group">
+                    <label class="checkbox-label">
+                      <input type="checkbox" id="vendor-active" checked>
+                      <span>Active (visible to users)</span>
+                    </label>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-outline" onclick="adminManager.closeVendorModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="adminManager.saveVendor()">Save Vendor</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Create User Modal -->
+          <div id="create-user-modal" class="admin-modal">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3>Create New User</h3>
+                <button class="close-btn" onclick="closeCreateUserModal()">✕</button>
+              </div>
+              <div class="modal-body">
+                <form id="create-user-form">
+                  <div class="form-group">
+                    <label for="new-user-email">Email Address *</label>
+                    <input type="email" id="new-user-email" required placeholder="user@example.com">
+                  </div>
+                  <div class="form-group">
+                    <label for="new-user-password">Password *</label>
+                    <input type="password" id="new-user-password" required placeholder="Minimum 6 characters" minlength="6">
+                  </div>
+                  <div class="form-group">
+                    <label for="new-user-display-name">Display Name *</label>
+                    <input type="text" id="new-user-display-name" required placeholder="John Doe">
+                  </div>
+                  <div class="form-group">
+                    <label for="new-user-role">Role *</label>
+                    <select id="new-user-role" required>
+                      <option value="user">User</option>
+                      <option value="admin">Admin</option>
+                      <option value="super_admin">Super Admin</option>
+                    </select>
+                  </div>
+                  <div class="form-info">
+                    <p><strong>Note:</strong> The user will be created with an unverified email address. They will need to verify their email before they can fully use the platform.</p>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeCreateUserModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="createUser()">Create User</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Locations Management Section -->
+        <section id="locations-section" class="admin-section">
+          <div class="section-header">
+            <h1>Location Management</h1>
+            <div class="section-actions">
+              <div class="current-city-display">
+                <strong>Current City:</strong> <span id="admin-current-city">Loading...</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Location System Info -->
+          <div class="config-section">
+            <h3>Unified Location System</h3>
+            <p class="config-help">
+              Your app now uses a unified location system with predefined cities. Users select their city from a dropdown, 
+              and all listings and map content are filtered to that city. This provides a consistent, reliable experience 
+              without depending on auto-location detection.
+            </p>
+            
+            <!-- City Management Controls -->
+            <div class="city-management-controls">
+              <div class="config-row">
+                <label for="admin-city-selector">Test City Selection:</label>
+                <div id="admin-city-picker-container">
+                  <!-- City picker will be inserted here -->
+                </div>
+                <small class="config-help">Change the current city to test how the system works across the app</small>
+              </div>
+              
+              <div class="config-row">
+                <div class="config-toggle">
+                  <input type="checkbox" id="enable-city-persistence">
+                  <label for="enable-city-persistence" class="toggle-label">
+                    <span class="toggle-switch"></span>
+                    Enable City Persistence
+                  </label>
+                </div>
+                <small class="config-help">When enabled, user's city selection is saved in localStorage</small>
+              </div>
+              
+              <div class="config-row">
+                <div class="config-toggle">
+                  <input type="checkbox" id="require-city-selection">
+                  <label for="require-city-selection" class="toggle-label">
+                    <span class="toggle-switch"></span>
+                    Require City Selection
+                  </label>
+                </div>
+                <small class="config-help">When enabled, users must select a city before viewing content</small>
+              </div>
+              
+              <button class="btn btn-primary" onclick="adminManager.saveLocationSettings()">
+                💾 Save Location Settings
+              </button>
+            </div>
+          </div>
+
+          <!-- Available Cities List -->
+          <div class="cities-container">
+            <h3>Available Cities</h3>
+            <div class="cities-grid" id="cities-grid">
+              <div class="loading">Loading cities...</div>
+            </div>
+          </div>
+
+          <!-- City Statistics -->
+          <div class="city-stats-container">
+            <h3>City Usage Statistics</h3>
+            <div class="stats-grid" id="city-stats-grid">
+              <div class="loading">Loading statistics...</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Configuration Section -->
+        <section id="config-section" class="admin-section">
+          <div class="section-header">
+            <h1>Configuration</h1>
+            <div class="section-actions">
+              <button class="btn btn-outline" onclick="adminManager.resetConfig()">
+                Reset to Defaults
+              </button>
+              <button class="btn btn-primary" onclick="adminManager.saveConfig()">
+                Save Changes
+              </button>
+            </div>
+          </div>
+
+          <!-- Configuration Tabs -->
+          <div class="config-tabs">
+            <button class="tab-btn active" data-tab="general">General</button>
+            <button class="tab-btn" data-tab="search">🔍 Search</button>
+            <button class="tab-btn" data-tab="time-filtering">⏰ Time Filtering</button>
+            <button class="tab-btn" data-tab="security">Security</button>
+            <button class="tab-btn" data-tab="features">Features</button>
+            <button class="tab-btn" data-tab="appearance">Appearance</button>
+          </div>
+
+          <!-- Configuration Forms -->
+          <div id="config-forms" class="config-forms">
+            <div class="loading">Loading configuration...</div>
+          </div>
+
+        </section>
+
+        <!-- Audit Logs Section -->
+        <section id="logs-section" class="admin-section">
+          <div class="section-header">
+            <h1>Audit Logs</h1>
+            <div class="section-actions">
+              <select id="log-level" class="filter-select">
+                <option value="all">All Levels</option>
+                <option value="info">Info</option>
+                <option value="warning">Warning</option>
+                <option value="error">Error</option>
+              </select>
+              <input type="date" id="log-date" class="date-input">
+              <button class="btn btn-outline" onclick="adminManager.exportLogs()">
+                Export Logs
+              </button>
+            </div>
+          </div>
+
+          <!-- Logs Table -->
+          <div id="logs-table" class="logs-table">
+            <div class="loading">Loading audit logs...</div>
+          </div>
+
+        </section>
+
+        <!-- Developer Tools Section -->
+        <section id="developer-tools-section" class="admin-section">
+          <div class="section-header">
+            <h1>Developer Tools</h1>
+            <div class="section-actions">
+              <button class="btn btn-outline" onclick="developerTools.clearAllTestData()">
+                🗑️ Clear Test Data
+              </button>
+              <button class="btn btn-primary" onclick="developerTools.runAllTests()">
+                🧪 Run All Tests
+              </button>
+            </div>
+          </div>
+
+          <!-- Developer Tools Tabs -->
+          <div class="dev-tools-tabs">
+            <button class="tab-btn active" data-tab="debug-console">🐛 Debug Console</button>
+            <button class="tab-btn" data-tab="auth-testing">🔐 Auth Testing</button>
+            <button class="tab-btn" data-tab="user-management-testing">👥 User Management</button>
+            <button class="tab-btn" data-tab="onboarding-testing">🎯 Onboarding</button>
+            <button class="tab-btn" data-tab="firebase-testing">🔥 Firebase Testing</button>
+            <button class="tab-btn" data-tab="email-testing">📧 Email Testing</button>
+            <button class="tab-btn" data-tab="pin-testing">📍 Pin Testing</button>
+            <button class="tab-btn" data-tab="notification-testing">🔔 Notification Testing</button>
+            <button class="tab-btn" data-tab="header-testing">🎨 Header Testing</button>
+            <button class="tab-btn" data-tab="system-debug">🔍 System Debug</button>
+          </div>
+
+          <!-- Debug Console Tab -->
+          <div id="debug-console-tab" class="dev-tool-tab active">
+            <div id="developer-tools-content"></div>
+          </div>
+
+          <!-- Auth Testing Tab -->
+          <div id="auth-testing-tab" class="dev-tool-tab">
+            <div class="tool-section">
+              <h3>🔐 Authentication Testing</h3>
+              <div class="test-grid">
+                <div class="test-card">
+                  <h4>Firebase Auth Status</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.checkAuthStatus()">Check Status</button>
+                    <button class="btn btn-sm" onclick="developerTools.testAuthFlow()">Test Flow</button>
+                  </div>
+                  <div id="auth-status-result" class="test-result">
+                    <div class="status-indicator unknown">Status: Unknown</div>
+                  </div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Simple Auth Test</h4>
+                  <div class="test-controls">
+                    <input type="email" id="test-email" placeholder="Test email" value="test@example.com">
+                    <input type="password" id="test-password" placeholder="Test password" value="testpass123">
+                    <button class="btn btn-sm" onclick="developerTools.testSignUp()">Test Sign Up</button>
+                    <button class="btn btn-sm" onclick="developerTools.testSignIn()">Test Sign In</button>
+                  </div>
+                  <div id="simple-auth-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Admin Access Test</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.testAdminAccess()">Test Admin Access</button>
+                    <button class="btn btn-sm" onclick="developerTools.checkUserRole()">Check Current Role</button>
+                  </div>
+                  <div id="admin-access-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Auth State Listener</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.startAuthListener()">Start Listener</button>
+                    <button class="btn btn-sm" onclick="developerTools.stopAuthListener()">Stop Listener</button>
+                  </div>
+                  <div id="auth-listener-result" class="test-result"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Management Testing Tab -->
+          <div id="user-management-testing-tab" class="dev-tool-tab">
+            <div class="tool-section">
+              <h3>👥 User Management Testing</h3>
+              <div class="test-grid">
+                <div class="test-card">
+                  <h4>UserManager Status</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.checkUserManagerStatus()">Check Status</button>
+                    <button class="btn btn-sm" onclick="developerTools.testUserManagerInit()">Test Init</button>
+                  </div>
+                  <div id="user-manager-status-result" class="test-result">
+                    <div class="status-indicator unknown">Status: Unknown</div>
+                  </div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Create User Button Test</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.testCreateUserButton()">Test Button Click</button>
+                    <button class="btn btn-sm" onclick="developerTools.debugCreateUserModal()">Debug Modal</button>
+                    <button class="btn btn-sm" onclick="developerTools.simulateCreateUser()">Simulate Modal</button>
+                  </div>
+                  <div id="create-user-button-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>User Management Functions</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.testShowCreateUserModal()">Test showCreateUserModal</button>
+                    <button class="btn btn-sm" onclick="developerTools.testCloseCreateUserModal()">Test closeCreateUserModal</button>
+                    <button class="btn btn-sm" onclick="developerTools.listUserManagerMethods()">List Methods</button>
+                  </div>
+                  <div id="user-management-functions-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Modal Elements Debug</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.checkModalElements()">Check Elements</button>
+                    <button class="btn btn-sm" onclick="developerTools.testModalDisplay()">Test Display</button>
+                    <button class="btn btn-sm" onclick="developerTools.inspectFormElements()">Inspect Form</button>
+                  </div>
+                  <div id="modal-elements-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Global Objects Debug</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.checkGlobalObjects()">Check Globals</button>
+                    <button class="btn btn-sm" onclick="developerTools.testUserManagementClass()">Test Class</button>
+                    <button class="btn btn-sm" onclick="developerTools.debugConsoleErrors()">Check Console</button>
+                  </div>
+                  <div id="global-objects-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Quick Fix Actions</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.forceInitUserManager()">Force Init</button>
+                    <button class="btn btn-sm" onclick="developerTools.createGlobalUserManager()">Create Global</button>
+                    <button class="btn btn-sm" onclick="developerTools.testDirectModalShow()">Direct Modal</button>
+                    <button class="btn btn-sm" onclick="developerTools.fixAuthModals()">Fix AuthModals</button>
+                    <button class="btn btn-sm" onclick="developerTools.testEmailVerification()">Test Email</button>
+                  </div>
+                  <div id="quick-fix-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>System Overview</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.testBothUserCreationSystems()">Test Both Systems</button>
+                  </div>
+                  <div id="systems-overview-result" class="test-result"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Onboarding Testing Tab -->
+          <div id="onboarding-testing-tab" class="dev-tool-tab">
+            <div class="tool-section">
+              <h3>🎯 Onboarding System Testing</h3>
+              <div class="test-grid">
+                <div class="test-card">
+                  <h4>Onboarding Manager Status</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.checkOnboardingStatus()">Check Status</button>
+                    <button class="btn btn-sm" onclick="developerTools.testOnboardingInit()">Test Init</button>
+                  </div>
+                  <div id="onboarding-status-result" class="test-result">
+                    <div class="status-indicator unknown">Status: Unknown</div>
+                  </div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Onboarding Flow Test</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.simulateOnboarding()">Start Test Flow</button>
+                    <button class="btn btn-sm" onclick="developerTools.testOnboardingSteps()">Test All Steps</button>
+                    <button class="btn btn-sm" onclick="developerTools.resetOnboarding()">Reset State</button>
+                  </div>
+                  <div id="onboarding-flow-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Layout & CSS Testing</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.testOnboardingCSS()">Test CSS</button>
+                    <button class="btn btn-sm" onclick="developerTools.testScrollingFix()">Test Scrolling</button>
+                    <button class="btn btn-sm" onclick="developerTools.testMobileLayout()">Test Mobile</button>
+                  </div>
+                  <div id="onboarding-layout-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Step Navigation</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.testStepNavigation()">Test Navigation</button>
+                    <button class="btn btn-sm" onclick="developerTools.jumpToStep(1)">Jump to Step 1</button>
+                    <button class="btn btn-sm" onclick="developerTools.jumpToStep(2)">Jump to Step 2</button>
+                    <button class="btn btn-sm" onclick="developerTools.jumpToStep(3)">Jump to Step 3</button>
+                  </div>
+                  <div id="step-navigation-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Onboarding Data</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.inspectOnboardingData()">Inspect Data</button>
+                    <button class="btn btn-sm" onclick="developerTools.testDataPersistence()">Test Persistence</button>
+                    <button class="btn btn-sm" onclick="developerTools.clearOnboardingData()">Clear Data</button>
+                  </div>
+                  <div id="onboarding-data-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Quick Fixes</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.forceInitOnboarding()">Force Init</button>
+                    <button class="btn btn-sm" onclick="developerTools.injectOnboardingCSS()">Inject CSS</button>
+                    <button class="btn btn-sm" onclick="developerTools.testOnboardingModal()">Test Modal</button>
+                  </div>
+                  <div id="onboarding-fixes-result" class="test-result"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Firebase Testing Tab -->
+          <div id="firebase-testing-tab" class="dev-tool-tab">
+            <div class="tool-section">
+              <h3>🔥 Firebase Connectivity Testing</h3>
+              <div class="test-grid">
+                <div class="test-card">
+                  <h4>Connection Status</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.testFirebaseConnection()">Test Connection</button>
+                    <button class="btn btn-sm" onclick="developerTools.checkFirebaseConfig()">Check Config</button>
+                  </div>
+                  <div id="firebase-connection-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Firestore Operations</h4>
+                  <div class="test-controls">
+                    <input type="text" id="test-collection" placeholder="Collection name" value="test">
+                    <button class="btn btn-sm" onclick="developerTools.testFirestoreWrite()">Test Write</button>
+                    <button class="btn btn-sm" onclick="developerTools.testFirestoreRead()">Test Read</button>
+                    <button class="btn btn-sm" onclick="developerTools.testFirestoreQuery()">Test Query</button>
+                  </div>
+                  <div id="firestore-ops-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Real-time Listeners</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.testRealtimeListener()">Start Listener</button>
+                    <button class="btn btn-sm" onclick="developerTools.stopRealtimeListener()">Stop Listener</button>
+                  </div>
+                  <div id="realtime-listener-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Security Rules Test</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.testSecurityRules()">Test Rules</button>
+                    <button class="btn btn-sm" onclick="developerTools.testPermissions()">Test Permissions</button>
+                  </div>
+                  <div id="security-rules-result" class="test-result"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Email Testing Tab -->
+          <div id="email-testing-tab" class="dev-tool-tab">
+            <div class="tool-section">
+              <h3>📧 Email System Testing</h3>
+              <div class="test-grid">
+                <div class="test-card">
+                  <h4>SMTP Configuration</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.checkEmailConfig()">Check Config</button>
+                    <button class="btn btn-sm" onclick="developerTools.testSMTPConnection()">Test SMTP</button>
+                  </div>
+                  <div id="smtp-config-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Send Test Email</h4>
+                  <div class="test-controls">
+                    <input type="email" id="test-email-recipient" placeholder="Recipient email">
+                    <input type="text" id="test-email-subject" placeholder="Subject" value="Test Email">
+                    <textarea id="test-email-body" placeholder="Email body" rows="3">This is a test email from PacksList admin panel.</textarea>
+                    <button class="btn btn-sm" onclick="developerTools.sendTestEmail()">Send Test</button>
+                  </div>
+                  <div id="test-email-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Email Templates</h4>
+                  <div class="test-controls">
+                    <select id="email-template-selector">
+                      <option value="welcome">Welcome Email</option>
+                      <option value="pack-approved">Pack Approved</option>
+                      <option value="pack-rejected">Pack Rejected</option>
+                      <option value="notification">Notification</option>
+                    </select>
+                    <button class="btn btn-sm" onclick="developerTools.previewEmailTemplate()">Preview</button>
+                    <button class="btn btn-sm" onclick="developerTools.testEmailTemplate()">Test Send</button>
+                  </div>
+                  <div id="email-template-result" class="test-result"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pin Testing Tab -->
+          <div id="pin-testing-tab" class="dev-tool-tab">
+            <div class="tool-section">
+              <h3>📍 Pin Interaction Testing</h3>
+              <div class="test-grid">
+                <div class="test-card">
+                  <h4>Pin Click Simulation</h4>
+                  <div class="test-controls">
+                    <select id="test-vendor-selector">
+                      <option value="bozo-headstash">Bozo Headstash</option>
+                      <option value="gumbo">Gumbo</option>
+                      <option value="deep-fried">Deep Fried</option>
+                      <option value="high-tolerance">High Tolerance</option>
+                    </select>
+                    <button class="btn btn-sm" onclick="developerTools.simulatePinClick()">Simulate Click</button>
+                    <button class="btn btn-sm" onclick="developerTools.simulatePinHover()">Simulate Hover</button>
+                  </div>
+                  <div id="pin-simulation-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Modal Integration</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.testModalDisplay()">Test Modal</button>
+                    <button class="btn btn-sm" onclick="developerTools.testModalAnimations()">Test Animations</button>
+                    <button class="btn btn-sm" onclick="developerTools.testModalClose()">Test Close</button>
+                  </div>
+                  <div id="modal-integration-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Analytics Tracking</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.testAnalyticsTracking()">Test Tracking</button>
+                    <button class="btn btn-sm" onclick="developerTools.viewInteractionData()">View Data</button>
+                    <button class="btn btn-sm" onclick="developerTools.clearInteractionData()">Clear Data</button>
+                  </div>
+                  <div id="analytics-tracking-result" class="test-result"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notification Testing Tab -->
+          <div id="notification-testing-tab" class="dev-tool-tab">
+            <div class="tool-section">
+              <h3>🔔 Notification System Testing</h3>
+              <div class="test-grid">
+                <div class="test-card">
+                  <h4>Toast Notifications</h4>
+                  <div class="test-controls">
+                    <select id="toast-type-selector">
+                      <option value="success">Success</option>
+                      <option value="warning">Warning</option>
+                      <option value="error">Error</option>
+                      <option value="info">Info</option>
+                    </select>
+                    <input type="text" id="toast-message" placeholder="Toast message" value="Test notification">
+                    <button class="btn btn-sm" onclick="developerTools.testToastNotification()">Show Toast</button>
+                  </div>
+                  <div id="toast-test-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Notification Timing</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.testNotificationTiming()">Test 2s Timer</button>
+                    <button class="btn btn-sm" onclick="developerTools.testCloseButton()">Test Close Button</button>
+                    <button class="btn btn-sm" onclick="developerTools.testMultipleToasts()">Test Multiple</button>
+                  </div>
+                  <div id="notification-timing-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Pack Status Notifications</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.testPackApproved()">Pack Approved</button>
+                    <button class="btn btn-sm" onclick="developerTools.testPackRejected()">Pack Rejected</button>
+                    <button class="btn btn-sm" onclick="developerTools.testPackFlagged()">Pack Flagged</button>
+                  </div>
+                  <div id="pack-notifications-result" class="test-result"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Header Testing Tab -->
+          <div id="header-testing-tab" class="dev-tool-tab">
+            <div class="tool-section">
+              <h3>🎨 Header System Testing</h3>
+              <div class="test-grid">
+                <div class="test-card">
+                  <h4>Header Manager</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.testHeaderManager()">Test Manager</button>
+                    <button class="btn btn-sm" onclick="developerTools.testHeaderRefresh()">Test Refresh</button>
+                    <button class="btn btn-sm" onclick="developerTools.testHeaderConfig()">Test Config</button>
+                  </div>
+                  <div id="header-manager-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Dynamic Updates</h4>
+                  <div class="test-controls">
+                    <input type="text" id="test-location-text" placeholder="Location text" value="Test Location">
+                    <button class="btn btn-sm" onclick="developerTools.testLocationUpdate()">Update Location</button>
+                    <button class="btn btn-sm" onclick="developerTools.testAuthUpdate()">Update Auth State</button>
+                  </div>
+                  <div id="dynamic-updates-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Header Showcase</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.showHeaderDemo()">Show Demo</button>
+                    <button class="btn btn-sm" onclick="developerTools.testHoverEffects()">Test Hover</button>
+                    <button class="btn btn-sm" onclick="developerTools.testAnimations()">Test Animations</button>
+                  </div>
+                  <div id="header-showcase-result" class="test-result"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- System Debug Tab -->
+          <div id="system-debug-tab" class="dev-tool-tab">
+            <div class="tool-section">
+              <h3>🔍 System Debug & Monitoring</h3>
+              <div class="test-grid">
+                <div class="test-card">
+                  <h4>Admin Status</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.checkAdminStatus()">Check Status</button>
+                    <button class="btn btn-sm" onclick="developerTools.debugAdminAuth()">Debug Auth</button>
+                    <button class="btn btn-sm" onclick="developerTools.viewSystemInfo()">System Info</button>
+                  </div>
+                  <div id="admin-status-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Console Logs</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.enableDebugLogs()">Enable Debug</button>
+                    <button class="btn btn-sm" onclick="developerTools.exportLogs()">Export Logs</button>
+                    <button class="btn btn-sm" onclick="developerTools.clearLogs()">Clear Logs</button>
+                  </div>
+                  <div id="console-logs-result" class="test-result">
+                    <div id="debug-console" class="debug-console"></div>
+                  </div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Performance Testing</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.runPerformanceTest()">Run Test</button>
+                    <button class="btn btn-sm" onclick="developerTools.testMemoryUsage()">Memory Test</button>
+                    <button class="btn btn-sm" onclick="developerTools.testLoadTimes()">Load Times</button>
+                  </div>
+                  <div id="performance-test-result" class="test-result"></div>
+                </div>
+
+                <div class="test-card">
+                  <h4>Error Simulation</h4>
+                  <div class="test-controls">
+                    <button class="btn btn-sm" onclick="developerTools.simulateNetworkError()">Network Error</button>
+                    <button class="btn btn-sm" onclick="developerTools.simulateAuthError()">Auth Error</button>
+                    <button class="btn btn-sm" onclick="developerTools.simulateFirebaseError()">Firebase Error</button>
+                  </div>
+                  <div id="error-simulation-result" class="test-result"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Test Results Summary -->
+          <div class="test-summary">
+            <h3>🧪 Test Results Summary</h3>
+            <div class="summary-grid">
+              <div class="summary-item">
+                <div class="summary-label">Tests Run</div>
+                <div class="summary-value" id="tests-run-count">0</div>
+              </div>
+              <div class="summary-item">
+                <div class="summary-label">Passed</div>
+                <div class="summary-value success" id="tests-passed-count">0</div>
+              </div>
+              <div class="summary-item">
+                <div class="summary-label">Failed</div>
+                <div class="summary-value error" id="tests-failed-count">0</div>
+              </div>
+              <div class="summary-item">
+                <div class="summary-label">Coverage</div>
+                <div class="summary-value" id="test-coverage">0%</div>
+              </div>
+            </div>
+            <div class="summary-actions">
+              <button class="btn btn-outline" onclick="developerTools.exportTestResults()">Export Results</button>
+              <button class="btn btn-primary" onclick="developerTools.generateTestReport()">Generate Report</button>
+            </div>
+          </div>
+
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="../config-manager.js"></script>
+  <script src="../vendor-manager.js"></script>
+  <script src="../location-manager.js"></script>
+  <script src="../auth/auth-manager.js"></script>
+  <script src="../auth/auth-modals.js"></script>
+  <script src="../auth/onboarding-manager.js"></script>
+  <script src="../email/emailjs-setup.js"></script>
+  <script src="../email/email-integration.js"></script>
+  <script src="../security/dom-utils.js"></script>
+  <script src="admin-manager.js"></script>
+  <script src="pack-moderation.js"></script>
+  <script src="pack-moderation-manager.js"></script>
+  <script src="user-management.js"></script>
+  <script src="behavior-analytics.js"></script>
+  <script src="audit-logger.js"></script>
+  <script src="../notifications/notification-manager.js"></script>
+  <script src="../header-manager.js"></script>
+  <script src="developer-tools.js"></script>
+</body>
+</html>
